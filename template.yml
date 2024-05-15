@@ -32,7 +32,7 @@ Resources:
     Properties:
       Name: ate/smtp/qa
       Description: Secret for SMTP.
-      SecretString: '{"SMTP_PASS":"adsdasssa","SMTP_PORT":"231","SMTP_SERVER":"dasd","SMTP_USER":"asdas"}'
+      SecretString: '{"SMTP_PASS":"--SMTP-PASS--","SMTP_PORT":--SMTP-PORT--,"SMTP_SERVER":"--SMTP-SERVER--","SMTP_USER":"--SMTP-USER--"}'
 
   lambdaExecutionRole:
     Type: AWS::IAM::Role

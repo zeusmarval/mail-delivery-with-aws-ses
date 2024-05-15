@@ -23,7 +23,7 @@ def lambda_handler(event, context):
         'SES': ses,
         'Source': event['from'],
         'Host': credentials['SMTP_SERVER'],
-        'Port': int(credentials['SMTP_PORT']),
+        'Port': credentials['SMTP_PORT'],
         'Secure': False
     }
     

@@ -1,0 +1,17 @@
+{
+  "from": "mail0@domain.com",
+  "subject": "mensaje importante",
+  "to": ["mail1@domain.com", "mail2@domain.com"],
+  "text": "Hello world?",
+  "html": "<b>Hello world?</b>",
+  "cc": ["mail3@domain.com"],
+  "bcc": ["mail4@domain.com"],
+  "replyTo": ["reply@mail.com"],
+  "attachments": [
+    {
+      "filename": "attachment.txt",
+      "content": "base64_encoded_content"
+    }
+  ],
+  "auth": true
+}

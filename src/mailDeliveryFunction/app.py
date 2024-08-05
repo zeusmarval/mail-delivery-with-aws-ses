@@ -15,8 +15,6 @@ def wraped_send_mail(ses, mail_options):
 
 def lambda_handler(event, context):
 
-    print(json.dumps(event))
-
     mail_options = generate_mail_options(event)
 
     transporter_config = {

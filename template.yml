@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
-Description: Stack para envio de correos por SES.
+Description: Stack for sending emails via SES
 
 # Parameters:
   # securityGroupIds:
@@ -10,65 +10,36 @@ Description: Stack para envio de correos por SES.
   #   Type: String
   #   Default: subnet-1,subnet-2
 
-Globals:
-  Function:
-    MemorySize: 128
-    Runtime: python3.12
-    Timeout: 5
-    Handler: lambda_function.lambda_handler
-    EphemeralStorage:
-      Size: 512
-    Architectures:
-      - "x86_64"
-    # VpcConfig:
-    #   SubnetIds: !Split [",", !Ref subnetIDs]
-    #   SecurityGroupIds:
-    #     - !Ref securityGroupIds
-
 Resources:
 
   secretManagerSMTP:
     Type: AWS::SecretsManager::Secret
     Properties:
-      Name: ate/smtp/qa
+      # Name: 
       Description: Secret for SMTP.
       SecretString: '{"SMTP_PASS":"--SMTP-PASS--","SMTP_PORT":--SMTP-PORT--,"SMTP_SERVER":"--SMTP-SERVER--","SMTP_USER":"--SMTP-USER--"}'
-
-  lambdaExecutionRole:
-    Type: AWS::IAM::Role
-    Properties:
-      RoleName: !Sub '${AWS::StackName}-lambdaExecution'
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: lambda.amazonaws.com
-            Action: sts:AssumeRole
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
-        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
-        - arn:aws:iam::aws:policy/AmazonSESFullAccess
-      Policies:
-        - PolicyName: !Sub '${AWS::StackName}-lambdaExecution-Policy'
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action: 
-                  - secretsmanager:GetSecretValue
-                Resource: 
-                  - !Ref secretManagerSMTP
 
   mailDeliveryFunction:
     Type: AWS::Serverless::Function
     Properties:
-      # FunctionName:
-      CodeUri: scr/mailDeliveryFunction
-      Role: !GetAtt lambdaExecutionRole.Arn
+      Handler: app.lambda_handler
+      CodeUri: src/mailDeliveryFunction
+      Runtime: python3.12
+      Timeout: 5
+      Policies:
+        - AmazonSESFullAccess
+        - Statement:
+            - Effect: Allow
+              Action:
+                - secretsmanager:GetSecretValue
+              Resource:
+                - !GetAtt secretManagerSMTP.Id
       Environment:
         Variables:
-          secretManagerArn: !Ref secretManagerSMTP
+          secretManagerArn: !GetAtt secretManagerSMTP.Id
+      VpcConfig:
+        SubnetIds: !Split [",", !Ref subnetIDs]
+        SecurityGroupIds: !Ref securityGroupIds
 
 Outputs:
 

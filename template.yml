@@ -2,13 +2,13 @@ AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: Stack for sending emails via SES
 
-# Parameters:
-  # securityGroupIds:
-  #   Type: String
-  #   Default: sg-000000
-  # subnetIDs:
-  #   Type: String
-  #   Default: subnet-1,subnet-2
+Parameters:
+  securityGroupIds:
+    Type: String
+    Default: sg-000000
+  subnetIDs:
+    Type: String
+    Default: subnet-1,subnet-2
 
 Resources:
 
@@ -40,10 +40,4 @@ Resources:
       VpcConfig:
         SubnetIds: !Split [",", !Ref subnetIDs]
         SecurityGroupIds: !Ref securityGroupIds
-
-Outputs:
-
-  mailDeliveryFunctionArn:
-    Description: Arn de la funcion lambda.
-    Value: !Ref mailDeliveryFunction
   

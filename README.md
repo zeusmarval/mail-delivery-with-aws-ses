@@ -104,4 +104,3 @@ aws cloudformation delete-stack --stack-name SendEmailsViaSES
 - Sending emails with Amazon SES: [Amazon SES Developer Guide](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/send-email.html)
 - AWS Lambda with VPC: [AWS Lambda VPC Configuration](https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html)
 - AWS Secrets Manager: [AWS Secrets Manager Documentation](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html)
-```

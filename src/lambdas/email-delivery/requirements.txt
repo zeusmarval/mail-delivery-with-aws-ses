@@ -1,0 +1,8 @@
+# No external dependencies required
+# All dependencies are either:
+# - Part of Python standard library (json, logging, re, os, base64, email.*)
+# - Included in AWS Lambda Python runtime (boto3, botocore)
+
+# Optional: Uncomment to pin boto3 version (not required as it's included in Lambda runtime)
+# boto3>=1.34.0
+

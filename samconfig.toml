@@ -1,9 +1,21 @@
 version = 0.1
+[default.build.parameters]
+cached = true
+parallel = true
+
 [default.deploy.parameters]
-stack_name = "ms-mail-delivery"
+stack_name = "dev-email-delivery"
 resolve_s3 = true
-s3_prefix = "ms-mail-delivery"
-region = "us-west-2"
+s3_prefix = "dev-email-delivery"
+region = "us-east-1"
 confirm_changeset = true
 capabilities = ["CAPABILITY_IAM", "CAPABILITY_NAMED_IAM"]
 image_repositories = []
+tags = [
+    "author=zama",
+    "Resources=realtime-services"
+]
+
+
+[default.global.parameters]
+region = "us-east-1"

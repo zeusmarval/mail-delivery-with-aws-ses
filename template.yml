@@ -1,78 +1,59 @@
-AWSTemplateFormatVersion: "2010-09-09"
+AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: Stack para envio de correos por SES.
+Description: COMMON SERVICES - MAIL DELIVERY | Stack para envio de correos
+  electronicos mediante AWS SES
 
-# Parameters:
-  # securityGroupIds:
-  #   Type: String
-  #   Default: sg-000000
-  # subnetIDs:
-  #   Type: String
-  #   Default: subnet-1,subnet-2
+Parameters:
+  Environment:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - qa
+      - prod
+    Description: Ambiente de despliegue (dev, qa, prod)
 
-Globals:
-  Function:
-    MemorySize: 128
-    Runtime: python3.12
-    Timeout: 5
-    Handler: lambda_function.lambda_handler
-    EphemeralStorage:
-      Size: 512
-    Architectures:
-      - "x86_64"
-    # VpcConfig:
-    #   SubnetIds: !Split [",", !Ref subnetIDs]
-    #   SecurityGroupIds:
-    #     - !Ref securityGroupIds
+Conditions:
+  IsProd: !Equals
+    - !Ref Environment
+    - prod
 
 Resources:
 
-  secretManagerSMTP:
-    Type: AWS::SecretsManager::Secret
-    Properties:
-      Name: ate/smtp/qa
-      Description: Secret for SMTP.
-      SecretString: '{"SMTP_PASS":"--SMTP-PASS--","SMTP_PORT":--SMTP-PORT--,"SMTP_SERVER":"--SMTP-SERVER--","SMTP_USER":"--SMTP-USER--"}'
-
-  lambdaExecutionRole:
-    Type: AWS::IAM::Role
-    Properties:
-      RoleName: !Sub '${AWS::StackName}-lambdaExecution'
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: lambda.amazonaws.com
-            Action: sts:AssumeRole
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
-        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
-        - arn:aws:iam::aws:policy/AmazonSESFullAccess
-      Policies:
-        - PolicyName: !Sub '${AWS::StackName}-lambdaExecution-Policy'
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action: 
-                  - secretsmanager:GetSecretValue
-                Resource: 
-                  - !Ref secretManagerSMTP
-
-  mailDeliveryFunction:
+  MailDeliveryFunction:
     Type: AWS::Serverless::Function
     Properties:
-      # FunctionName:
-      CodeUri: scr/mailDeliveryFunction
-      Role: !GetAtt lambdaExecutionRole.Arn
-      Environment:
-        Variables:
-          secretManagerArn: !Ref secretManagerSMTP
+      FunctionName: !Sub ${AWS::StackName}-mail-delivery
+      Description: COMMON SERVICES - MAIL DELIVERY | Funcion Lambda para envio de
+        correos electronicos mediante AWS SES con soporte para adjuntos
+      Runtime: python3.13
+      Handler: app.lambda_handler
+      CodeUri: src/lambdas/email-delivery
+      Timeout: 25
+      Architectures:
+        - x86_64
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - ses:SendEmail
+                - ses:SendRawEmail
+              Resource: '*'
+
+  MailDeliveryFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${AWS::StackName}-mail-delivery
+      RetentionInDays: !If
+        - IsProd
+        - 7
+        - 1
 
 Outputs:
 
-  mailDeliveryFunctionArn:
-    Description: Arn de la funcion lambda.
-    Value: !Ref mailDeliveryFunction
-  
+  MailDeliveryFunctionArn:
+    Description: ARN de la funcion Lambda de envio de correos
+    Value: !GetAtt MailDeliveryFunction.Arn
+    Export:
+      Name: !Sub ${AWS::StackName}-mail-delivery-function-arn

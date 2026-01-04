@@ -1,0 +1,20 @@
+{
+  "from": "sender@example.com",
+  "to": [
+    "recipient1@example.com",
+    "recipient2@example.com"
+  ],
+  "cc": [
+    "cc@example.com"
+  ],
+  "bcc": [
+    "bcc@example.com"
+  ],
+  "subject": "Test Email Without Attachment",
+  "text": "This is a plain text version of the email.\n\nThis email was sent using AWS SES via Lambda function.",
+  "html": "<html><body><h1>Test Email Without Attachment</h1><p>This is an <strong>HTML</strong> version of the email.</p><p>This email was sent using AWS SES via Lambda function.</p></body></html>",
+  "replyTo": [
+    "reply@example.com"
+  ]
+}
+

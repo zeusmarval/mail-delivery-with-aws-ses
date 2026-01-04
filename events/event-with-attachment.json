@@ -1,0 +1,32 @@
+{
+  "from": "sender@example.com",
+  "to": [
+    "recipient1@example.com",
+    "recipient2@example.com"
+  ],
+  "cc": [
+    "cc@example.com"
+  ],
+  "bcc": [
+    "bcc@example.com"
+  ],
+  "subject": "Test Email With Attachment",
+  "text": "This is a plain text version of the email with an attachment.\n\nPlease find the attached document.\n\nThis email was sent using AWS SES via Lambda function.",
+  "html": "<html><body><h1>Test Email With Attachment</h1><p>This is an <strong>HTML</strong> version of the email with an attachment.</p><p>Please find the attached document.</p><p>This email was sent using AWS SES via Lambda function.</p></body></html>",
+  "replyTo": [
+    "reply@example.com"
+  ],
+  "attachments": [
+    {
+      "filename": "example-document.pdf",
+      "content": "JVBERi0xLjQKJdPr6eEKMSAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgMiAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL1R5cGUgL1BhZ2VzCi9LaWRzIFszIDAgUl0KL0NvdW50IDEKL01lZGlhQm94IFswIDAgNjEyIDc5Ml0KPj4KZW5kb2JqCjMgMCBvYmoKPDwKL1R5cGUgL1BhZ2UKL1BhcmVudCAyIDAgUgovUmVzb3VyY2VzIDw8Ci9Gb250IDw8Ci9GMSA0IDAgUgo+Pgo+PgovQ29udGVudHMgNSAwIFIKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL1R5cGUgL0ZvbnQKL1N1YnR5cGUgL1R5cGUxCi9CYXNlRm9udCAvSGVsdmV0aWNhCj4+CmVuZG9iagoxIDAgb2JqCjw8Ci9UeXBlIC9DYXRhbG9nCi9QYWdlcyAyIDAgUgo+PgplbmRvYmoKNSAwIG9iago8PAovTGVuZ3RoIDQ0Cj4+CnN0cmVhbQpCVAovRjEgMTIgVGYKNzAgNzAwIFRkCihFeGFtcGxlIERvY3VtZW50KSBUagpFVAplbmRzdHJlYW0KZW5kb2JqCnhyZWYKMCA2CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDAwOSAwMDAwMCBuIAowMDAwMDAwMDU4IDAwMDAwIG4gCjAwMDAwMDAxMTUgMDAwMDAgbiAKMDAwMDAwMDI2MyAwMDAwMCBuIAowMDAwMDAwMzIwIDAwMDAwIG4gCnRyYWlsZXIKPDwKL1NpemUgNgovUm9vdCAxIDAgUgo+PgpzdGFydHhyZWYKNDI5CiUlRU9G",
+      "contentType": "application/pdf"
+    },
+    {
+      "filename": "example-image.png",
+      "content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+      "contentType": "image/png"
+    }
+  ]
+}
+
